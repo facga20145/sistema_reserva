@@ -10,8 +10,8 @@
     <nav>
         <ul>
             <li><a href="../V_V_Principal/index.html">Inicio</a></li>
-            <li><a href="../V_V_Docentes/docentes.html">Datos del Docente</a></li>
-            <li><a href="../V_V_Asignacion/asignaciones.html">Asignación de Aulas</a></li>
+            <li><a href="../V_V_Docentes/docente.html">Datos del Docente</a></li>
+            <li><a href="../V_V_Asignacion/asignaciones.php">Asignación de Aulas</a></li>
         </ul>
     </nav>
     <h1>Registrar Curso</h1>

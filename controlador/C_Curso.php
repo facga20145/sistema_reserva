@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $curso = new Curso();
     if ($curso->registrarCurso($nombre, $ciclo, $id_escuela)) {
-        header("Location: ../Vista/V_V_Cursos/cursos.html");
+        header("Location: ../Vista/V_V_Cursos/cursos.php");
     } else {
         echo "Error al registrar el curso";
     }
