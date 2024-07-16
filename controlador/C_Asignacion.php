@@ -9,9 +9,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hora_fin = $_POST['hora_fin'];
     $grupo = $_POST['grupo'];
     $cantidad_alumnos = $_POST['cantidad_alumnos'];
+    $escuelaId = isset($_POST['escuela']) ? $_POST['escuela'] : null;
 
     $asignacion = new Asignacion();
-    if ($asignacion->asignarAula($id_docente, $id_curso, $dia, $hora_inicio, $hora_fin, $grupo, $cantidad_alumnos)) {
+    if ($asignacion->asignarAula($id_docente, $id_curso, $dia, $hora_inicio, $hora_fin, $grupo, $cantidad_alumnos, $escuelaId)) {
         header("Location: ../Vista/V_V_Asignacion/asignaciones.php");
     } else {
         echo "Error al asignar el aula o no hay aulas disponibles";

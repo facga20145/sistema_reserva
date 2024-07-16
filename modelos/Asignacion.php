@@ -56,6 +56,31 @@ class Asignacion {
         return $aula ? $aula['Id_Aula'] : null;
     }
 
+    public function obtenerAsignacionesPorEscuela($escuelaId) {
+        if ($escuelaId == '') {
+            $query = "SELECT asignaciones.*, docentes.Nombre AS Docente, cursos.Nombre AS Curso, aulas.Nombre AS Aula, cursos.Ciclo, asignaciones.Cantidad_Alumnos 
+                      FROM asignaciones 
+                      JOIN docentes ON asignaciones.Id_Docente = docentes.Id_Docente 
+                      JOIN cursos ON asignaciones.Id_Curso = cursos.Id_Curso 
+                      JOIN aulas ON asignaciones.Id_Aula = aulas.Id_Aula";
+        } else {
+            $query = "SELECT asignaciones.*, docentes.Nombre AS Docente, cursos.Nombre AS Curso, aulas.Nombre AS Aula, cursos.Ciclo, asignaciones.Cantidad_Alumnos 
+                      FROM asignaciones 
+                      JOIN docentes ON asignaciones.Id_Docente = docentes.Id_Docente 
+                      JOIN cursos ON asignaciones.Id_Curso = cursos.Id_Curso 
+                      JOIN aulas ON asignaciones.Id_Aula = aulas.Id_Aula
+                      WHERE cursos.Id_Escuela = ? OR (cursos.Ciclo = 1 AND cursos.Id_Escuela IN (1, 2))";
+        }
+
+        $stmt = $this->conn->prepare($query);
+        if ($escuelaId != '') {
+            $stmt->bind_param("i", $escuelaId);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+    }
+
     public function obtenerAsignaciones() {
         $query = "SELECT * FROM asignaciones";
         $result = $this->conn->query($query);

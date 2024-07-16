@@ -102,6 +102,43 @@ nav ul li a:hover {
     margin-bottom: 20px;
 }
 
+/* Table styles */
+.asignaciones-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.asignaciones-table th, .asignaciones-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.asignaciones-table th {
+    background: #f4f4f4;
+    font-weight: bold;
+}
+
+.asignaciones-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.asignaciones-table tr:hover {
+    background: #f1f1f1;
+}
+
+/* Day container */
+.day-container {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 8px;
+}
+
 /* Responsive styles */
 @media (max-width: 600px) {
     nav ul li {
