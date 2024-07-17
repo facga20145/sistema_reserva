@@ -67,6 +67,7 @@ nav ul {
     list-style: none;
     text-align: center;
     padding: 0;
+    margin: 0;
 }
 
 nav ul li {
@@ -99,6 +100,63 @@ nav ul li a:hover {
 .login-container h1,
 .course-container h1,
 .assignment-container h1 {
+    margin-bottom: 20px;
+}
+
+/* Main container styles */
+.main-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-container label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.main-container select,
+.main-container input[type="text"] {
+    width: auto;
+    padding: 5px;
+    margin-right: 20px;
+}
+
+#btn-actualizar {
+    padding: 5px 10px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#btn-actualizar:hover {
+    background: #218838;
+}
+
+/* Table styles */
+.asignaciones-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.asignaciones-table th, .asignaciones-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.asignaciones-table th {
+    background-color: #f2f2f2;
+}
+
+.day-container {
     margin-bottom: 20px;
 }
 

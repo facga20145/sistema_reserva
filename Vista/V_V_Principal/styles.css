@@ -67,6 +67,7 @@ nav ul {
     list-style: none;
     text-align: center;
     padding: 0;
+    margin: 0;
 }
 
 nav ul li {
@@ -117,7 +118,8 @@ nav ul li a:hover {
     margin-right: 10px;
 }
 
-.main-container select {
+.main-container select,
+.main-container input[type="text"] {
     width: auto;
     padding: 5px;
     margin-right: 20px;
