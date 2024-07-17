@@ -13,6 +13,7 @@
             <li><a href="../V_V_Docentes/docente.html">Datos del Docente</a></li>
             <li><a href="../V_V_Cursos/cursos.php">Datos del Curso</a></li>
             <li><a href="../V_V_Asignacion/asignaciones.php">Asignación de Aulas</a></li>
+            <li><a href="../V_V_Editar/editar.php">Actualizar y Editar</a></li>
         </ul>
     </nav>
     <h1>Sistema de Asignación de Aulas</h1>
@@ -75,6 +76,10 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            cargarAsignaciones();
+        });
     </script>
 </body>
 </html>
