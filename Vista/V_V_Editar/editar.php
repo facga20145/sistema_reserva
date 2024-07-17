@@ -13,7 +13,6 @@
             <li><a href="../V_V_Docentes/docente.html">Datos del Docente</a></li>
             <li><a href="../V_V_Cursos/cursos.php">Datos del Curso</a></li>
             <li><a href="../V_V_Asignacion/asignaciones.php">Asignación de Aulas</a></li>
-            <li><a href="editar.php">Actualizar y Editar</a></li>
         </ul>
     </nav>
     <h1>Editar Asignaciones</h1>
@@ -24,13 +23,20 @@
         </select>
         <form id="form-editar">
             <label for="docente">Docente:</label>
-            <input type="text" id="docente" name="docente" required>
+            <input type="text" id="docente" name="docente" readonly>
 
             <label for="curso">Curso:</label>
-            <input type="text" id="curso" name="curso" required>
+            <input type="text" id="curso" name="curso" readonly>
 
             <label for="dia">Día:</label>
-            <input type="text" id="dia" name="dia" required>
+            <select id="dia" name="dia" required>
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+            </select>
 
             <label for="hora_inicio">Hora Inicio:</label>
             <input type="time" id="hora_inicio" name="hora_inicio" required>

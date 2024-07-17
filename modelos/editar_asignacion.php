@@ -72,22 +72,67 @@ class Asignacion {
     }
 
     public function obtenerAulaDisponible($cantidad_alumnos, $dia, $hora_inicio, $hora_fin) {
-        // Obtener un aula disponible que tenga capacidad suficiente y no esté asignada en ese horario
-        $query_aula = "SELECT a.Id_Aula FROM aulas a
-                       LEFT JOIN asignaciones asig ON a.Id_Aula = asig.Id_Aula AND asig.Dia = ? AND (
-                           (asig.Hora_Inicio < ? AND asig.Hora_Fin > ?) OR
-                           (asig.Hora_Inicio < ? AND asig.Hora_Fin > ?) OR
-                           (asig.Hora_Inicio >= ? AND asig.Hora_Fin <= ?)
-                       )
-                       WHERE a.Capacidad >= ? AND asig.Id_Aula IS NULL
-                       LIMIT 1";
-        $stmt_aula = $this->conn->prepare($query_aula);
-        $stmt_aula->bind_param("sssssssi", $dia, $hora_fin, $hora_inicio, $hora_inicio, $hora_inicio, $hora_inicio, $hora_fin, $cantidad_alumnos);
-        $stmt_aula->execute();
-        $result_aula = $stmt_aula->get_result();
-        $aula = $result_aula->fetch_assoc();
-        
-        return $aula ? $aula['Id_Aula'] : null;
+        // Intentar encontrar un aula con capacidad exacta
+        $query_exact = "SELECT a.Id_Aula 
+                        FROM aulas a
+                        LEFT JOIN asignaciones asig ON a.Id_Aula = asig.Id_Aula AND asig.Dia = ? AND (
+                            (asig.Hora_Inicio < ? AND asig.Hora_Fin > ?) OR
+                            (asig.Hora_Inicio < ? AND asig.Hora_Fin > ?) OR
+                            (asig.Hora_Inicio >= ? AND asig.Hora_Fin <= ?)
+                        )
+                        WHERE a.Capacidad = ? AND asig.Id_Aula IS NULL
+                        LIMIT 1";
+        $stmt_exact = $this->conn->prepare($query_exact);
+        $stmt_exact->bind_param("sssssssi", $dia, $hora_fin, $hora_inicio, $hora_inicio, $hora_inicio, $hora_inicio, $hora_fin, $cantidad_alumnos);
+        $stmt_exact->execute();
+        $result_exact = $stmt_exact->get_result();
+        $aula_exact = $result_exact->fetch_assoc();
+
+        if ($aula_exact) {
+            return $aula_exact['Id_Aula'];
+        }
+
+        // Intentar encontrar un aula con capacidad cercana dentro de un margen de 6 alumnos
+        $query_close = "SELECT a.Id_Aula 
+                        FROM aulas a
+                        LEFT JOIN asignaciones asig ON a.Id_Aula = asig.Id_Aula AND asig.Dia = ? AND (
+                            (asig.Hora_Inicio < ? AND asig.Hora_Fin > ?) OR
+                            (asig.Hora_Inicio < ? AND asig.Hora_Fin > ?) OR
+                            (asig.Hora_Inicio >= ? AND asig.Hora_Fin <= ?)
+                        )
+                        WHERE a.Capacidad >= ? AND a.Capacidad <= ? AND asig.Id_Aula IS NULL
+                        ORDER BY a.Capacidad ASC
+                        LIMIT 1";
+        $stmt_close = $this->conn->prepare($query_close);
+        $min_capacity = $cantidad_alumnos;
+        $max_capacity = $cantidad_alumnos + 6;
+        $stmt_close->bind_param("ssssssiii", $dia, $hora_fin, $hora_inicio, $hora_inicio, $hora_inicio, $hora_inicio, $hora_fin, $min_capacity, $max_capacity);
+        $stmt_close->execute();
+        $result_close = $stmt_close->get_result();
+        $aula_close = $result_close->fetch_assoc();
+
+        if ($aula_close) {
+            return $aula_close['Id_Aula'];
+        }
+
+        // Si no hay aulas disponibles dentro del margen de 6 alumnos, asignar cualquier aula disponible con suficiente capacidad
+        $query_any = "SELECT a.Id_Aula 
+                      FROM aulas a
+                      LEFT JOIN asignaciones asig ON a.Id_Aula = asig.Id_Aula AND asig.Dia = ? AND (
+                          (asig.Hora_Inicio < ? AND asig.Hora_Fin > ?) OR
+                          (asig.Hora_Inicio < ? AND asig.Hora_Fin > ?) OR
+                          (asig.Hora_Inicio >= ? AND asig.Hora_Fin <= ?)
+                      )
+                      WHERE a.Capacidad >= ? AND asig.Id_Aula IS NULL
+                      ORDER BY a.Capacidad ASC
+                      LIMIT 1";
+        $stmt_any = $this->conn->prepare($query_any);
+        $stmt_any->bind_param("sssssssi", $dia, $hora_fin, $hora_inicio, $hora_inicio, $hora_inicio, $hora_inicio, $hora_fin, $cantidad_alumnos);
+        $stmt_any->execute();
+        $result_any = $stmt_any->get_result();
+        $aula_any = $result_any->fetch_assoc();
+
+        return $aula_any ? $aula_any['Id_Aula'] : null;
     }
 
     public function eliminarAsignacion($id) {
@@ -97,4 +142,3 @@ class Asignacion {
         return $stmt->execute();
     }
 }
-?>
