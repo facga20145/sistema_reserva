@@ -70,6 +70,10 @@ nav ul li a:hover {
     background-color: #f2f2f2;
 }
 
+.asignaciones-table th:first-child, .asignaciones-table td:first-child {
+    width: 120px; /* Increased width for the hour column */
+}
+
 .asignacion-epis {
     background-color: #d4edda;
 }
