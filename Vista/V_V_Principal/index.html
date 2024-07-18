@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Asignación de Aulas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="../V_V_Principal/index.html">Inicio</a></li>
+            <li><a href="../V_V_Docentes/docente.html">Datos del Docente</a></li>
+            <li><a href="../V_V_Cursos/cursos.php">Datos del Curso</a></li>
+            <li><a href="../V_V_Asignacion/asignaciones.php">Asignación de Aulas</a></li>
+            <li><a href="../V_V_Editar/editar.php">Actualizar y Editar</a></li>
+            <li><a href="../V_V_Excel/excel.php">Vista Asignación</a></li>
+        </ul>
+    </nav>
+    <h1>Sistema de Asignación de Aulas</h1>
+    <div class="main-container">
+        <label for="escuela">Seleccionar Escuela:</label>
+        <select id="escuela" name="escuela" onchange="cargarAsignaciones()">
+            <option value="">Todas</option>
+            <option value="1">EPIS</option>
+            <option value="2">EPISW</option>
+        </select>
+        
+        <label for="buscar-docente">Buscar Docente:</label>
+        <input type="text" id="buscar-docente" name="buscar-docente" oninput="cargarAsignaciones()">
+        
+        <div id="asignaciones-container"></div>
+    </div>
+    <script>
+        function cargarAsignaciones() {
+            const escuela = document.getElementById('escuela').value;
+            const buscarDocente = document.getElementById('buscar-docente').value.toLowerCase();
+
+            fetch(`../../controlador/C_Principal.php?escuela=${escuela}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('asignaciones-container');
+                    container.innerHTML = '';
+                    for (const dia in data) {
+                        const filteredData = data[dia].filter(asignacion => 
+                            asignacion.docente.toLowerCase().includes(buscarDocente)
+                        );
+
+                        if (filteredData.length > 0) {
+                            const dayDiv = document.createElement('div');
+                            dayDiv.className = 'day-container';
+                            dayDiv.innerHTML = `<h2>${dia}</h2>`;
+                            const table = document.createElement('table');
+                            table.className = 'asignaciones-table';
+                            const thead = document.createElement('thead');
+                            thead.innerHTML = `
+                                <tr>
+                                    <th>Docente</th>
+                                    <th>Curso</th>
+                                    <th>Aula</th>
+                                    <th>Hora Inicio</th>
+                                    <th>Hora Fin</th>
+                                    <th>Grupo</th>
+                                    <th>Ciclo</th>
+                                    <th>Cantidad de Alumnos</th>
+                                </tr>
+                            `;
+                            table.appendChild(thead);
+                            const tbody = document.createElement('tbody');
+                            filteredData.forEach(asignacion => {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
+                                    <td>${asignacion.docente}</td>
+                                    <td>${asignacion.curso}</td>
+                                    <td>${asignacion.aula}</td>
+                                    <td>${asignacion.hora_inicio}</td>
+                                    <td>${asignacion.hora_fin}</td>
+                                    <td>${asignacion.grupo}</td>
+                                    <td>${asignacion.ciclo}</td>
+                                    <td>${asignacion.cantidad_alumnos}</td>
+                                `;
+                                tbody.appendChild(tr);
+                            });
+                            table.appendChild(tbody);
+                            dayDiv.appendChild(table);
+                            container.appendChild(dayDiv);
+                        }
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            cargarAsignaciones();
+        });
+    </script>
+</body>
+</html>
