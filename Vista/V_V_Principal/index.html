@@ -4,33 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Asignación de Aulas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="../V_V_Principal/index.html">Inicio</a></li>
-            <li><a href="../V_V_Docentes/docente.html">Datos del Docente</a></li>
-            <li><a href="../V_V_Cursos/cursos.php">Datos del Curso</a></li>
-            <li><a href="../V_V_Asignacion/asignaciones.php">Asignación de Aulas</a></li>
-            <li><a href="../V_V_Editar/editar.php">Actualizar y Editar</a></li>
-            <li><a href="../V_V_Excel/excel.php">Vista Asignación</a></li>
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Nombre de la Tesis</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../V_V_Docentes/docente.html">Datos del Docente</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../V_V_Cursos/cursos.php">Datos del Curso</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Asignación
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="../V_V_Asignacion/asignaciones.php">Asignación de Aulas</a>
+                        <a class="dropdown-item" href="../V_V_Editar/editar.php">Actualizar y Editar</a>
+                        <a class="dropdown-item" href="../V_V_Excel/excel.php">Vista Asignación</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <h1>Sistema de Asignación de Aulas</h1>
-    <div class="main-container">
-        <label for="escuela">Seleccionar Escuela:</label>
-        <select id="escuela" name="escuela" onchange="cargarAsignaciones()">
-            <option value="">Todas</option>
-            <option value="1">EPIS</option>
-            <option value="2">EPISW</option>
-        </select>
-        
-        <label for="buscar-docente">Buscar Docente:</label>
-        <input type="text" id="buscar-docente" name="buscar-docente" oninput="cargarAsignaciones()">
-        
+    <div class="container mt-5">
+        <h1 class="text-center">Sistema de Asignación de Aulas</h1>
+        <div class="form-row mt-4">
+            <div class="form-group col-md-6">
+                <label for="escuela">Seleccionar Escuela:</label>
+                <select id="escuela" name="escuela" class="form-control" onchange="cargarAsignaciones()">
+                    <option value="">Todas</option>
+                    <option value="1">EPIS</option>
+                    <option value="2">EPISW</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="buscar-docente">Buscar Docente:</label>
+                <input type="text" id="buscar-docente" name="buscar-docente" class="form-control" oninput="cargarAsignaciones()">
+            </div>
+        </div>
         <div id="asignaciones-container"></div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         function cargarAsignaciones() {
             const escuela = document.getElementById('escuela').value;
@@ -48,10 +72,10 @@
 
                         if (filteredData.length > 0) {
                             const dayDiv = document.createElement('div');
-                            dayDiv.className = 'day-container';
-                            dayDiv.innerHTML = `<h2>${dia}</h2>`;
+                            dayDiv.className = 'day-container mt-4';
+                            dayDiv.innerHTML = `<h2 class="text-center">${dia}</h2>`;
                             const table = document.createElement('table');
-                            table.className = 'asignaciones-table';
+                            table.className = 'table table-striped table-bordered';
                             const thead = document.createElement('thead');
                             thead.innerHTML = `
                                 <tr>
